@@ -1,8 +1,9 @@
 __maintainer__ = "Süli Tamara"
-__version__ = "1.0"
+__version__ = "1.1"
 __date__ = "2022.01.07."
 
 from selenium.webdriver import Chrome
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -14,7 +15,7 @@ PWD = ""   #Add meg a tevéd hívójelét!
 
 ### OPEN BROWSER ###
 
-driver = Chrome(ChromeDriverManager().install())
+driver = Chrome(service=Service(ChromeDriverManager().install()))
 driver.get(r"https://teveclub.hu/")
 
 ### LOGIN ###
@@ -36,8 +37,8 @@ except NoSuchElementException:
 
 ### TANÍTÁS (ha már van elkezdve) ###
 
-driver.find_element(By.CSS_SELECTOR, '[alt="Tanítom a tevémet!"]').click()
 try:
+    driver.find_element(By.CSS_SELECTOR, '[alt="Tanítom a tevémet!"]').click()
     driver.find_element(By.NAME, "learn").click()
 except NoSuchElementException:
     pass
