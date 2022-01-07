@@ -1,9 +1,11 @@
 __maintainer__ = "Süli Tamara"
-__version__ = "1.4"
+__version__ = "1.5"
 __date__ = "2022.01.07."
 
 import os
-from win10toast import ToastNotifier
+import plyer.platforms.win.notification
+from plyer import notification
+
 
 import dotenv
 from selenium.common.exceptions import NoSuchElementException
@@ -15,11 +17,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
 dotenv.load_dotenv()
-
-
-def noti(title, text):
-    toaster = ToastNotifier()
-    toaster.show_toast(title, text)
 
 
 ### OPEN BROWSER ###
@@ -42,7 +39,7 @@ input_pwd.send_keys(os.getenv("PWD"))
 WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "input[src='/img_des/login_submit_46.gif'][type='image']"))).click()
 
 if driver.current_url == "https://teveclub.hu/error.pet?code=wronglogin":
-    noti("Automateve - Hiba", "Hibás felhasználónév vagy jelszó!")
+    notification.notify("Automateve - Hiba", "Hibás felhasználónév vagy jelszó!")
     quit()
 
 ### ETETÉS (1 étel és ital) ###
@@ -59,5 +56,4 @@ driver.find_element(By.CSS_SELECTOR, '[alt="Tanítom a tevémet!"]').click()
 try:
     driver.find_element(By.NAME, "learn").click()
 except NoSuchElementException:
-    pass
-    noti("Automateve - Hiba", "Ma már tanult " + os.getenv("USER") + "! :( (vagy ki kell választanod, mit tanuljon mától)")
+    notification.notify("Automateve - Info", "Ma már tanult " + os.getenv("USER") + "! :( (vagy ki kell választanod, mit tanuljon mától)")
