@@ -1,12 +1,12 @@
 __maintainer__ = "Süli Tamara"
-__version__ = "1.5"
-__date__ = "2022.01.07."
+__version__ = "1.6"
+__date__ = "2022.01.20."
 
+import win32.lib.win32con as win32con
+import win32gui
 import os
 import plyer.platforms.win.notification
 from plyer import notification
-
-
 import dotenv
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import Chrome, ChromeOptions
@@ -16,8 +16,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
-dotenv.load_dotenv()
+the_program_to_hide = win32gui.GetForegroundWindow()
+win32gui.ShowWindow(the_program_to_hide, win32con.SW_HIDE)
 
+dotenv.load_dotenv()
 
 ### OPEN BROWSER ###
 
@@ -54,6 +56,12 @@ except NoSuchElementException:
 driver.find_element(By.CSS_SELECTOR, '[alt="Tanítom a tevémet!"]').click()
 
 try:
-    driver.find_element(By.NAME, "learn").click()
+    driver.find_element(By.NAME, "tudomany")
+    notification.notify("Automateve - Info", "Ideje ránézni a kis kedvencedre, megint tanult valami újat! :D")
+    quit()
+
 except NoSuchElementException:
-    notification.notify("Automateve - Info", "Ma már tanult " + os.getenv("USER") + "! :( (vagy ki kell választanod, mit tanuljon mától)")
+    try:
+        driver.find_element(By.NAME, "learn").click()
+    except NoSuchElementException:
+        notification.notify("Automateve - Info", "Ajaj, ma már tanult " + os.getenv("USER") + "! :(")
