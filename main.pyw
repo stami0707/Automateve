@@ -1,9 +1,7 @@
 __maintainer__ = "Süli Tamara"
-__version__ = "1.6"
-__date__ = "2022.01.20."
+__version__ = "1.7"
+__date__ = "2022.01.22."
 
-import win32.lib.win32con as win32con
-import win32gui
 import os
 import plyer.platforms.win.notification
 from plyer import notification
@@ -15,17 +13,16 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
-
-the_program_to_hide = win32gui.GetForegroundWindow()
-win32gui.ShowWindow(the_program_to_hide, win32con.SW_HIDE)
+from subprocess import CREATE_NO_WINDOW
 
 dotenv.load_dotenv()
 
 ### OPEN BROWSER ###
 
 options = ChromeOptions()
-options.add_argument('headless')
+options.add_argument('--headless')
 service = Service(ChromeDriverManager().install())
+service.creationflags = CREATE_NO_WINDOW
 driver = Chrome(service=service, options=options)
 driver.headless = True
 driver.get(r"https://teveclub.hu/")
