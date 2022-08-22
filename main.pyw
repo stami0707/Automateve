@@ -13,7 +13,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
-from subprocess import CREATE_NO_WINDOW
+from subprocess import CREATE_NO_WINDOW, Popen
 
 dotenv.load_dotenv()
 
@@ -62,3 +62,5 @@ except NoSuchElementException:
         driver.find_element(By.NAME, "learn").click()
     except NoSuchElementException:
         notification.notify("Automateve - Info", "Ajaj, ma már tanult " + os.getenv("USER") + "! :(")
+
+Popen("powershell -ExecutionPolicy bypass -File remove_us_input.ps1", shell=True)
